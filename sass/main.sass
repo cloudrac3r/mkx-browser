@@ -1,0 +1,236 @@
+$bg: #dedbd9
+$modal-header-bg: #808080
+$cup-background: #eceae9
+$fg: #222
+$hc: #060606
+$font: "Roboto","San Francisco","Helvetica",sans-serif
+$size: 18px
+$border: #444
+$bc: rgba(20, 20, 20, 0.8)
+$pink: #ddaddd
+$blue: #a0bdde
+
+@mixin normalise
+	font-family: $font
+	font-size: $size
+	color: $fg
+	background-color: $bg
+
+@mixin flex
+	display: flex
+	align-items: center
+
+@mixin flex-stretch
+	display: flex
+	align-items: stretch
+
+@mixin flex-column
+	display: flex
+	flex-direction: column
+
+@mixin button-link
+	-webkit-appearance: none
+	-moz-appearance: none
+	padding: 0
+	margin: 0
+	border: none
+	border-radius: 0px
+	background: none
+	text-decoration: underline
+	cursor: pointer
+
+body
+	overflow-y: scroll
+
+body, button, input, select
+	@include normalise
+
+button, input, select
+	background-color: white
+	border: 1px solid $border
+	border-radius: 4px
+	line-height: 1
+	padding: 4px
+	margin: 4px
+
+h1, h2, h3
+	color: $hc
+
+.no-scrolling
+	overflow-y: hidden
+
+.search
+	@include flex-stretch
+
+.display-count
+	font-size: 20px
+	margin: 12px 0px
+
+.cup
+	$icon-size: 40px
+	$icon-gap: 10px
+	background-color: $cup-background
+	padding: 8px
+	border: 1px solid $border
+	border-radius: 4px
+	margin-bottom: 4px
+
+	&.hidden .list
+		display: none
+
+	.header
+		@include flex
+		user-select: none
+		-moz-user-select: none
+
+		.icon
+			margin-right: $icon-gap
+			width: auto
+			height: auto
+			max-width: $icon-size
+			max-height: $icon-size
+
+		.name
+			font-size: 1.2em
+			margin: 0
+
+	.list
+		margin: 6px 0px 10px
+		padding: 0
+		//@include flex-column
+
+		.course
+			list-style-type: none
+
+			&.focus
+				padding: 5px 0px
+				margin: -6px -1px
+				box-shadow: 0px 10px 10px -5px $cup-background, 0px -10px 10px -5px $cup-background
+				background-color: $blue
+				border: 1px solid $border
+				border-radius: 4px
+				position: relative
+
+			.summary
+				display: grid
+				margin-left: 5px
+				grid-template-columns: 20px auto 1fr
+				align-items: center
+
+				.number
+					justify-self: center
+
+				.checkbox
+					height: 20px
+					width: 20px
+					margin: 0px 5px 0px 0px
+					-webkit-appearance: none
+					-moz-appearance: none
+
+					&:checked
+						background-color: $border
+
+			&.focus .details
+				display: block
+
+			.details
+				display: none
+
+				.icon
+					max-width: 20px
+					max-height: 20px
+
+				.table
+					margin-left: $icon-size + $icon-gap
+					display: grid
+					grid-template-columns: 20px auto
+					grid-gap: 5px
+					align-items: center
+					justify-items: left
+					line-height: 1
+
+					button
+						@include button-link
+
+					a, button
+						color: black
+
+.modal-container
+	position: fixed
+	top: 0
+	bottom: 0
+	left: 0
+	right: 0
+	display: none
+	background-color: $bc
+
+	.modal
+		$border-radius: 12px
+		background: $bg
+		position: absolute
+		left: 10px
+		right: 10px
+		top: 10px
+		bottom: 10px
+		max-width: 600px
+		margin: 0 auto
+		border-radius: $border-radius
+		overflow: hidden
+		display: flex
+		flex-direction: column
+
+		> *
+			padding: $border-radius
+
+		.head
+			line-height: 1
+			text-align: center
+			background: $modal-header-bg
+			border-radius: $border-radius $border-radius 0px 0px
+			display: grid
+			grid-template-columns: 1fr auto
+
+			.text
+				font-size: 24px
+				margin: 0
+
+
+			.close-button
+				background: none
+				border: none
+				margin: 0
+				padding: 0
+				line-height: 0
+				width: 20px
+				height: 20px
+				cursor: pointer
+				display: block
+				font-size: 41px
+
+		.body
+			overflow-y: auto
+			margin-bottom: $border-radius
+
+.settings-modal-inner
+	h2
+		margin-top: 0
+
+	.tag-list
+		list-style-type: none
+		padding: 0
+		margin: 0
+
+		.tag
+			$gap: 6px
+			$size: 25px
+			display: flex
+			align-items: center
+			margin-bottom: $gap
+
+			.checkbox
+				margin: 0
+				width: $size
+				height: $size
+
+			.label
+				padding-left: $gap

@@ -1,0 +1,330 @@
+#CT-CODE
+
+[INFO]
+
+
+# ----------------------------------
+# From https://pastebin.com/u3YRWzAM
+# ----------------------------------
+
+
+# This section will be ignored on scanning.
+
+# This is a textual representation of CT-CODE file used by CTGPR made by Chadderz
+# and MrBean3500vr. "Wiimms SZS Tools" can convert binary (raw) and text CT-CODE
+# files in both directions. The text parser supports variables, C like expressions
+# and nested IF-THEN-ELSE and LOOP structures.
+#
+# Info about the general parser syntax and semantics:
+#   * http://szs.wiimm.de/doc/syntax
+#
+# Info about the CT-CODE:
+#   * http://szs.wiimm.de/doc/ctcode
+#
+# Reference list of CT-CODE parser functions:
+#   * http://szs.wiimm.de/doc/ctcode/func
+#
+# Hint:
+#   Set the options --no-header (-H) while decoding to suppress this info and some
+#   syntax descriptions below.
+
+#----------------------------------------------------------------------------------
+# Only the section [RACING-TRACK-LIST] is scanned, all other sections are ignored!
+#----------------------------------------------------------------------------------
+
+
+#
+###############################################################################
+
+[SETUP]
+
+#--- Identify the tool and version, that have written this file:
+
+TOOL     = wctct
+SYSTEM   = cygwin
+VERSION  = 1.52a
+REVISION = 7164
+DATE     = 2016-06-29
+
+
+#--- Statstics
+
+USED-RACING-TRACKS  =  88 # number of active racing tracks (used by cup)
+USED-BATTLE-TRACKS  =  10 # number of active battle tracks (used by cup)
+DEFINED-TRACKS      = 105 # total number of defined tracks
+MAX-TRACKS          = 105 # total number of track slots
+
+DEFINED-RACING-CUPS =  22 # number of defined racing cups
+MAX-RACING-CUPS     =  22 # max possible number of racing cups
+DEFINED-BATTLE-CUPS =   2 # number of defined battle cups
+MAX-BATTLE-CUPS     =   2 # max possible number of battle cups
+UNUSED-CUPS         =   0 # number of unused cups (space available)
+
+#
+###############################################################################
+
+[RACING-TRACK-LIST]
+
+#---------
+# Syntax:
+#---------
+#
+# 6 kinds of records are allowed: N, C, S, X, T and H
+#
+#  * Nintendo track mode: 'N' mode
+#
+#	This command can only be used once and only before the first track
+#	definition. It defines, how to manage Nintendos original tracks.
+#	A numerical expression is expected. The 4 symbols are predefined:
+#
+#	  N$NONE : Nintendos tracks will NOT inserted automatically.
+#	           This is the default.
+#
+#	  N$HIDE : Nintendos tracks will be defined, but the tracks are not
+#	           shown in any Cup. If such track is selected by accident,
+#	           it can be played.
+#		   THIS MODE IS EXPERIMENTAL AND WILL FREEZE THE WII!
+#
+#	  N$SHOW : Define automatically 8 Cups with Nintendos tracks.
+#
+#	  N$SWAP : Define automatically 8 Cups with Nintendos tracks, but
+#		   change the cup order, so that all 4 Wii Cups are in the
+#		   first row and all 4 retro cups in the second row.
+#
+#	For HIDE+SHOW+SWAP:
+#	    The cup and track names are defined by internal names. If BMG is
+#	    read, messages may override the internal names.
+#	    The track order (except SWAP), file names, music and property ids
+#	    are the same as in original MKWii.
+#
+#	There are some flags, that are OR'ed to the base mode:
+#	  |N$F_HEX	: Replace original filenames by a 2 digit slot hex code.
+#	  |N$F_WII	: Prefix Wii track names by 'Wii '
+#	  |N$F_<color>	: For BMG output, colorize the console prefix. Possible
+#			  color names are: RED1, RED2, RED3, RED4, YELLOW, GREEN,
+#			  BLUE1, BLUE2, WHITE and CLEAR (transparent).
+#
+#  * Cup definition: 'C' name_of_cup
+#
+#	Close the current cup and fill it with default tracks. Then define a
+#	cup name for the next created cup. This command is optional and only
+#	used, to store names in the CT-CODE file without any impact.
+#
+#  * Slot definition: 'S' list
+#
+#	Define the track slots for the next defined tracks. A list element is
+#	either an index 'NUMBER' or a range 'NUMBER1:NUMBER2'. The system will
+#	automatically skip invalid and already used slots. All numbers are
+#	numerical expressions handled by the parser. If a number or range is
+#	followed by an '!', the slots are used for the next tracks ignoring
+#	previous usage or reservation.
+#
+#	Each slot definition overrides the previous one and an empty list will
+#	disable the slot list. Slot definiton are only needed to recreate a
+#	CT-CODE file with identical track layout.
+#
+#  * Used definition: 'X' list
+#
+#	Mark the slots as 'reserved'. A list element is either an index 'NUM'
+#	or a range 'NUMBER1:NUMBER2'. Only unused slots will be marked. All
+#	numbers are numerical expressions handled by the parser. If a number
+#	or range is followed by an '!', the slot is marked as used independent
+#	of its previous state.
+#
+#	The line "X 0x20:0x2b 0x43 0xff" is executed internally at startup.
+#
+#  * Track definition:
+#		'T' music_id ';' property_id ';' file_name ';' track_name
+#
+#	Define a new track. Use the next free slot defined by the previous
+#	slot definition, or the first not used slot. The elements are:
+#
+#	 * music_id
+#		The numeric ID of the sound file, a numerical expression is
+#		expected. The ID is normalized to avoid impossible values.
+#		Track numbers (0-31) are translated to the standard music ID.
+#		If a music ID is followd by an '!', the value is used without
+#		normalization and transformation.
+#		See http://szs.wiimm.de/doc/slot-id for infos about names. 
+#
+#	 * property_id
+#		The numeric ID of a basic slot (0-31) for the properties.
+#		A numerical expression is expected. Only the lowsest 5 Bits are
+#		used to avoid impossible values. If a property ID is followd by
+#		an '!', the value is used as entered.
+#		See http://szs.wiimm.de/doc/slot-id for infos about names. 
+#
+#	 * file_name
+#		The SZS file name without extension as string. If no file name
+#		is entered, the string 'slot_##' with a hex slot number is used.
+#
+#	 * track_name
+#		The name of the track (no impact) as string. If no or an empty
+#		track name is entered, the file name is used.
+#
+#  * Hidden track definition:
+#		'H' music_id ';' property_id ';' file_name ';' track_name
+#
+#	Define a new track, that doesn't appear in any cup. So it is hidden.
+#	A hidden track can be defined at any place in this section and doesn't
+#	touch the current cup.
+
+C "Cup 00" # 0x00 =  0
+S 0x08!, 0x01!, 0x02!, 0x04!
+T MC	; LC	; "beginner_course"	; "GCN Luigi Circuit"
+T MMM	; MMM	; "farm_course"		; "N64 Moo Moo Farm"
+T MG	; MG	; "kinoko_course"	; "Mushroom Fort"
+T TF	; TF	; "factory_course"	; "Waluigi's Choco Factory"
+
+C "Cup 01" # 0x01 =  1
+S 0x10!, 0x14!, 0x19!, 0x1a!
+T gPB	; gPB	; "old_peach_gc"	; "DS Cheep Cheep Beach"
+T dYF	; dYF	; "old_falls_ds"	; "Rocky Cliff"
+T sGV2	; sGV2	; "old_obake_sfc"	; "N64 Banshee Boardwalk"
+T nMR	; nMR	; "old_mario_64"	; "Retro Raceway"
+
+C "Cup 02" # 0x02 =  2
+S 0x00!, 0x05!, 0x06!, 0x07!
+T MC	; MC	; "castle_course"	; "Lakeside Hill"
+T CM	; CM	; "shopping_course"	; "Custom Track Offices"
+T DKS	; DKS	; "boardcross_course"	; "Snowy Circuit"
+T WGM	; WGM	; "truck_course"	; "Underground Mine"
+
+C "Cup 03" # 0x03 =  3
+S 0x1b!, 0x1f!, 0x17!, 0x12!
+T nSL	; nSL	; "old_sherbet_64"	; "GCN Sherbet Land"
+T gSGB	; gSGB	; "old_heyho_gba"	; "DS Nokonoko Beach"
+T dDS	; dDS	; "old_town_ds"		; "3DS Shy Guy Bazaar"
+T gWS	; gWS	; "old_waluigi_gc"	; "Wario's Lair"
+
+C "Cup 04" # 0x04 =  4
+S 0x09!, 0x0f!, 0x0b!, 0x03!
+T DC	; DC	; "senior_course"	; "Hillside Circuit"
+T KC	; KC	; "water_course"	; "Water Wood"
+T MT	; MT	; "treehouse_course"	; "Crystal Plains"
+T GV	; GV	; "volcano_course"	; "Last World"
+
+C "Cup 05" # 0x05 =  5
+S 0x15!, 0x1e!, 0x1d!, 0x11!
+T dDH	; dDH	; "old_desert_ds"	; "Volcanic Land"
+T gBC3	; gBC3	; "old_koopa_gba"	; "GBA Bowser Castle 4"
+T nDKJP	; nDKJP	; "old_donkey_64"	; "N64 Yoshi Valley"
+T gMC	; gMC	; "old_mario_gc"	; "GCN Yoshi Circuit"
+
+C "Cup 06" # 0x06 =  6
+S 0x0e!, 0x0a!, 0x0c!, 0x0d!
+T DDR	; DDR	; "desert_course"	; "Desert Mushroom Ruins"
+T MH	; MH	; "ridgehighway_course"	; "GCN Mushroom City"
+T BC	; BC	; "koopa_course"	; "Space Race Castle"
+T RR	; RR	; "rainbow_course"	; "Dark Matter Shrine"
+
+C "Cup 07" # 0x07 =  7
+S 0x18!, 0x16!, 0x13!, 0x1c!
+T sMC3	; sMC3	; "old_mario_sfc"	; "Pipeline Speedway"
+T dPG	; dPG	; "old_garden_ds"	; "Flowery Greenhouse"
+T gDKM	; gDKM	; "old_donkey_gc"	; "Canyon Run"
+T nBC	; nBC	; "old_koopa_64"	; "Castle of Time"
+
+C "Blooper Cup" # 0x08 =  8
+S 0x2a!, 0x2b!, 0x2c!, 0x2d!
+T sGV2	; sGV2	; "1A"			; "GBA Boo Lake"
+T MH	; gBC3	; "1B"			; "Skyline Avenue"
+T BC	; MC	; "1C"			; "3DS Neo Bowser City"
+T DKS	; DKS	; "1D"			; "Alpine Peak"
+
+C "Mega Mushroom Cup" # 0x09 =  9
+S 0x2e!, 0x2f!, 0x30!, 0x31!
+T GV	; GV	; "1E"			; "Fire Palace"
+T GV	; GV	; "1F"			; "Hell Pyramid"
+T DDR	; DDR	; "2A"			; "Desert Raceway"
+T KC	; KC	; "2B"			; "3DS Wario Shipyard"
+
+C "Thundercloud Cup" # 0x0a = 10
+S 0x32!, 0x33!, 0x34!, 0x35!
+T dYF	; gPB	; "2C"			; "GBA Lakeside Park"
+T MG	; sGV2	; "2D"			; "Kinoko Cave"
+T MMM	; MMM	; "2E"			; "Bouncy Farm"
+T dDS	; BC	; "2F"			; "Crossingville"
+
+C "POW Cup" # 0x0b = 11
+S 0x3b!, 0x3c!, 0x3d!, 0x3e!
+T DDR	; dDH	; "3A"			; "Sand Speedway"
+T RR	; gBC3	; "3B"			; "Sky Grove"
+T sMC3	; gBC3	; "3C"			; "SNES Mario Circuit 2"
+T RR	; gBC3	; "3D"			; "Rainbow Run"
+
+C "Bob-omb Cup" # 0x0c = 12
+S 0x3f!, 0x40!, 0x41!, 0x44!
+T BC	; BC	; "3E"			; "GCN Bowser Castle"
+T nBC	; nBC	; "3F"			; "DS Bowser Castle"
+T dYF	; gSGB	; "4A"			; "Yoshi Lagoon"
+T gPB	; gPB	; "4B"			; "3DS Cheep Cheep Lagoon"
+
+C "Fake Item  Cup" # 0x0d = 13
+S 0x45!, 0x46!, 0x47!, 0x48!
+T nDKJP	; dPG	; "4C"			; "Jungle Ruins"
+T agCL	; MMM	; "4D"			; "Candy Coaster"
+T MH	; gPB	; "4E"			; "Rush City Run"
+T gWS	; gWS	; "4F"			; "DS Wario Stadium"
+
+C "Golden Mushroom Cup" # 0x0e = 14
+S 0x49!, 0x4a!, 0x4b!, 0x4c!
+T dDH	; sMC3	; "5A"			; "GBA Cheese Land"
+T DC	; DC	; "5B"			; "3DS Maka Wuhu"
+T gWS	; gWS	; "5C"			; "GCN Wario Colluseum"
+T TF	; TF	; "5D"			; "Night Factory"
+
+C "Spring Cup" # 0x0f = 15
+S 0x4d!, 0x4e!, 0x4f!, 0x50!
+T DC	; DC	; "5E"			; "Love Beach"
+T agCL	; MC	; "5F"			; "Candy Mountains"
+T nBC	; nBC	; "6A"			; "Castle of Darkness"
+T RR	; RR	; "6B"			; "Space City"
+
+C "Fireball Cup" # 0x10 = 16
+S 0x51!, 0x52!, 0x53!, 0x54!
+T nBC	; nBC	; "6C"			; "Undiscovered Offlimit"
+T nBC	; nBC	; "6D"			; "3DS Bowser Castle"
+T GV	; GV	; "6E"			; "Item FireLand"
+T MC	; LC	; "6F"			; "3DS Mario Circuit"
+
+C "Red Shell Cup" # 0x11 = 17
+S 0x55!, 0x56!, 0x57!, 0x58!
+T DDR	; DDR	; "7A"			; "Desert Fort"
+T gDKM	; gDKM	; "7B"			; "Jungle Cliff"
+T MC	; LC	; "7C"			; "DS Mario Circuit"
+T nMR	; nMR	; "7D"			; "MP9 Toad Road"
+
+C "Bullet Bill Cup" # 0x12 = 18
+S 0x59!, 0x5a!, 0x5b!, 0x5c!
+T nBC	; nBC	; "7E"			; "Melting Magma Melee"
+T DKS	; DKS	; "7F"			; "DS DK Pass"
+T RR	; RR	; "8A"			; "Rainbow Labyrinth"
+T MC	; LC	; "8B"			; "GBA Mario Circuit "
+
+C "Chain Chomp Cup" # 0x13 = 19
+S 0x5d!, 0x5e!, 0x5f!, 0x60!
+T aFS	; GV	; "8C"			; "Bash N Dash N Bash"
+T dDS	; dDS	; "8D"			; "3DS Daisy Hills"
+T KC	; KC	; "8E"			; "Wetland Woods"
+T RR	; RR	; "8F"			; "Rainbow Slide"
+
+C "Mii Outfit C Cup" # 0x14 = 20
+S 0x61!, 0x62!, 0x63!, 0x64!
+T RR	; RR	; "9A"			; "Mushroom Island"
+T nSL	; nSL	; "9B"			; "Iceway"
+T WGM	; WGM	; "9C"			; "Marble Towers"
+T gMC	; gMC	; "9D"			; "Glimmer Express Trains"
+
+C "Posion Mushroom Cup" # 0x15 = 21
+S 0x65!, 0x66!, 0x67!, 0x68!
+T KC	; KC	; "9E"			; "Cool Castle Canyon"
+T KC	; KC	; "9F"			; "Aquania"
+T gSGB	; nDKJP	; "9G"			; "Sandcastle Park"
+T GV	; GV	; "9H"			; "Volcanic Pipeyard"
+
+#
+###############################################################################
+
+[END]
+# This section is ignored.

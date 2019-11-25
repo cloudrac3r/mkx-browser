@@ -1,0 +1,60 @@
+doctype html
+
+html(lang="en")
+	head
+		meta(charset="utf-8")
+		title Mario Kart X Track Browser
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		link(rel="stylesheet" type="text/css" href="/main.css")
+		script var {cupMasterList, tagMasterList} = !{JSON.stringify({cupMasterList, tagMasterList})}
+		script(defer src="/exports.js")
+		script(defer data-ex="main" src="/scripts/main.js")
+		script(defer data-ex="basic" src="/scripts/basic.js")
+		script(defer data-ex="search" src="/scripts/components/search.js")
+		script(defer data-ex="list" src="/scripts/components/list.js")
+		script(defer data-ex="cup" src="/scripts/components/cup.js")
+		script(defer data-ex="counter" src="/scripts/components/counter.js")
+		script(defer data-ex="modal" src="/scripts/components/modal.js")
+		script(defer data-ex="settings-modal" src="/scripts/components/modals/settings.js")
+		script(defer data-ex="store" src="/scripts/store.js")
+		script(defer data-ex="tag-store" src="/scripts/tagstore.js")
+	body
+		section.search
+			input(placeholder="Search")#search-box
+			button Tag
+
+		div
+			button#toggle-all Collapse all cups
+			button#random Random
+			button#mark-unplayed Mark all tracks unplayed
+
+		div#display-count.display-count
+
+		//section
+			div.cups
+				section.cup
+					header.header
+						img(src="/icons/mushroom-small.png" height=128 width=128).icon
+						h2.name Epic Cup
+					ol.list
+						each name, index in ["Epic Circuit", "Racing", "You're Winner", "Meerkat Central"]
+							li.course(class=(index === 1 ? "focus" : ""))
+								div.summary
+									div.number= index+1
+									div.checkbox-container
+										input(type="checkbox" autocomplete="off").checkbox
+									div.name= name
+								div.details
+									div.table
+										img(src="/icons/speech.svg").icon
+										div Alternate name
+										img(src="/icons/tag.svg").icon
+										div Tags
+										img(src="/icons/cog.svg").icon
+										button Settings
+
+		section
+			h1 Cups
+			div.cups#cups
+
+		div#modal-container.modal-container

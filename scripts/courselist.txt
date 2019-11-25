@@ -1,0 +1,153 @@
+0x00
+
+GCN Luigi Circuit
+N64 Moo Moo Farm
+Mushroom Fort
+Waluigi's Choco Factory
+
+0x01
+
+DS Cheep Cheep Beach
+Rocky Cliff
+N64 Banshee Boardwalk
+Retro Raceway
+
+0x02
+
+Lakeside Hill
+Custom Track Offices
+Snowy Circuit
+Underground Mine
+
+0x03
+
+GCN Sherbet Land
+DS Nokonoko Beach
+3DS Shy Guy Bazaar
+Wario's Lair
+
+0x04
+
+Hillside Circuit
+Water Wood
+Crystal Plains
+Last World
+
+0x05
+
+Volcanic Land
+GBA Bowser Castle 4
+N64 Yoshi Valley
+GCN Yoshi Circuit
+
+0x06
+
+Desert Mushroom Ruins
+GCN Mushroom City
+Space Race Castle
+Dark Matter Shrine
+
+0x07
+
+Pipeline Speedway
+Flowery Greenhouse
+Canyon Run
+Castle of Time
+
+0x08
+
+GBA Boo Lake
+Skyline Avenue
+3DS Neo Bowser City
+Alpine Peak
+
+0x09
+
+Fire Palace
+Hell Pyramid
+Desert Raceway
+3DS Wario Shipyard
+
+0x0a
+
+GBA Lakeside Park
+Kinoko Cave
+Bouncy Farm
+Crossingville
+
+0x0b
+
+Sand Speedway
+Sky Grove
+SNES Mario Circuit 2
+Rainbow Run
+
+0x0c
+
+GCN Bowser Castle
+DS Bowser Castle
+Yoshi Lagoon
+3DS Cheep Cheep Lagoon
+
+0x0d
+
+Jungle Ruins
+Candy Coaster
+Rush City Run
+DS Wario Stadium
+
+0x0e
+
+GBA Cheese Land
+3DS Maka Wuhu
+GCN Wario Colluseum
+Night Factory
+
+0x0f
+
+Love Beach
+Candy Mountains
+Castle of Darkness
+Space City
+
+0x10
+
+Undiscovered Offlimit
+3DS Bowser Castle
+Item FireLand
+3DS Mario Circuit
+
+0x11
+
+Desert Fort
+Jungle Cliff
+DS Mario Circuit
+MP9 Toad Road
+
+0x12
+
+Melting Magma Melee
+DS DK Pass
+Rainbow Labyrinth
+GBA Mario Circuit
+
+0x13
+
+Bash N Dash N Bash
+3DS Daisy Hills
+Wetland Woods
+Rainbow Slide
+
+0x14
+
+Mushroom Island
+Iceway
+Marble Towers
+Glimmer Express Trains
+
+0x15
+
+Cool Castle Canyon
+Aquania
+Sandcastle Park
+Volcanic Pipeyard

@@ -2,16 +2,17 @@
   "name": "mkx-browser",
   "version": "1.0.0",
   "description": "",
-  "main": "passthrough.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "cloudrac3r",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "better-sqlite3": "^5.4.3",
     "pinski": "github:cloudrac3r/pinski#staging"
-  }
+  },
+  "private": true
 }
